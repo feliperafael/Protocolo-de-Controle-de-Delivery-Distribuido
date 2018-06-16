@@ -6,8 +6,9 @@
 package Entregador;
 
 import framework.Entidade;
+import framework.Evento;
 import framework.EventoThread;
-import framework.SocketThread;
+//import framework.SocketThread;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,7 +32,7 @@ public class main {
         main m = new main();
         
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in)); 
-        System.out.print("Informe a Porta do Restaurante (Ex.: 9000): ");
+        System.out.print("Informe a Porta do Entregador (Ex.: 7000): ");
         String porta = in.readLine();
         
         m.inicia(Integer.parseInt(porta));
@@ -51,5 +52,12 @@ public class main {
         xthread = new SocketThread(e.msg, e);
         thread2 = new Thread(xthread);
         thread2.start();
+        
+        // Cadastro do Entregador
+        Evento ev = new Evento(9,"-1","-1",String.valueOf(porta)); // Apenas para cadastro
+        e.msg.conecta("localhost", 9000);
+        e.msg.envia(ev.toString());
+        e.msg.termina();
+        
     }
 }

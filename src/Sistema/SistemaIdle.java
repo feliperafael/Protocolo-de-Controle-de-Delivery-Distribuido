@@ -23,6 +23,7 @@ public class SistemaIdle extends Estado{
     public static final int recebeConfirmacaoDeEntrega = 6;
     public static final int enviaConfirmacaoDePedidoDeEntrega = 7;
     public static final int enviaConfirmacaoDeEntrega = 8;
+    public static final int cadastraEntregador = 9;
     
     
     public SistemaIdle(Entidade e){
@@ -60,6 +61,16 @@ public class SistemaIdle extends Estado{
                 break;
             case enviaConfirmacaoDeEntrega:
                 
+                break;
+            case cadastraEntregador:
+                int portaEntregador = Integer.valueOf(ev.portaEntregador);
+                int teste2 = s.cadastraEntregador(portaEntregador);
+                if(teste2 != -1)
+                    System.out.println("Entregador com a porta " + portaEntregador + " cadastrado com sucesso.");
+                else
+                    System.out.println("Entregador já cadastrado.");
+                
+                s.mudaEstado(this);
                 break;
             default:
         }

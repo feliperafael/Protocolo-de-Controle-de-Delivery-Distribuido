@@ -15,7 +15,7 @@ import framework.Evento;
  */
 public class EntregadorIdle extends Estado{
     Entregador e;
-    
+    public static final int cadastroEntregador = 0;
     public static final int aceitaPedidoDeEntrega = 1;    
     
     public EntregadorIdle(Entidade e){
@@ -26,6 +26,9 @@ public class EntregadorIdle extends Estado{
     @Override
     public void transicao(Evento ev){
         switch(ev.codigo){
+            case cadastroEntregador:
+                
+                break;
             case aceitaPedidoDeEntrega:
                 
                 break;
