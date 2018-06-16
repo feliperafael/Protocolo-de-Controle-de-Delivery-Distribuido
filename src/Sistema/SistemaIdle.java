@@ -16,6 +16,7 @@ import framework.Evento;
 public class SistemaIdle extends Estado{
     Sistema s;
     
+    public static final int cadastraRestaurante = 0;
     public static final int recebePedidoDeEntrega = 3;    
     public static final int divulgaPedidoDeEntrega = 4;
     public static final int recebeConfirmacaoDePedidoDeEntrega = 5;
@@ -32,6 +33,16 @@ public class SistemaIdle extends Estado{
     @Override
     public void transicao(Evento ev){
         switch(ev.codigo){
+            case cadastraRestaurante:
+                int portaRestaurante = Integer.valueOf(ev.portaRestaurante);
+                int teste = s.cadastraRestaurante(portaRestaurante);
+                if(teste != -1)
+                    System.out.println("Restaurante com a porta " + portaRestaurante + " cadastrado com sucesso.");
+                else
+                    System.out.println("Restaurante já cadastrado.");
+                
+                s.mudaEstado(this);
+                break;
             case recebePedidoDeEntrega:
                 
                 break;

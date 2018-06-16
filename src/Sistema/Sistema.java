@@ -21,6 +21,7 @@ public class Sistema extends Entidade {
     
     public Sistema(int lPort){
         super(lPort);
+        restaurantes = new ArrayList<>();
         
         idle = new SistemaIdle(this);
         mudaEstado(idle);
@@ -36,6 +37,8 @@ public class Sistema extends Entidade {
     }
     
     public boolean verificaRestaurante(int porta){
+        if(restaurantes.size() == 0)
+            return false;
         for(Restaurante r : restaurantes){
             if(r.msg.lPort == porta){
                 return true;

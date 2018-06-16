@@ -27,7 +27,7 @@ public class main {
     public static void main(String [] args){
         main m = new main();
         int porta = m.inicia();
-        System.out.println("Sistema rodando na porta -> " + String.valueOf(porta));
+        System.out.println("Sistema rodando na porta -> " + porta);
     }
     
     public int inicia(){

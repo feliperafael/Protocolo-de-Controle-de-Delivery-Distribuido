@@ -6,6 +6,7 @@
 package Restaurante;
 
 import framework.Entidade;
+import framework.Evento;
 import framework.EventoThread;
 //import framework.SocketThread;
 import java.io.BufferedReader;
@@ -51,5 +52,11 @@ public class main {
         xthread = new SocketThread(r.msg, r);
         thread2 = new Thread(xthread);
         thread2.start();
+        
+        // Cadastro do restaurante
+        Evento e = new Evento(0,String.valueOf(porta),"-1","-1"); // Apenas para cadastro
+        r.msg.conecta("localhost", 9000);
+        r.msg.envia(e.toString());
+        r.msg.termina();
     }
 }
