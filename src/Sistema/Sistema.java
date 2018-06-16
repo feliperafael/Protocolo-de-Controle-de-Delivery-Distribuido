@@ -5,8 +5,10 @@
  */
 package Sistema;
 
+import Restaurante.Restaurante;
 import framework.Entidade;
 import framework.Estado;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,11 +16,29 @@ import framework.Estado;
  */
 public class Sistema extends Entidade {
     public Estado idle;
+    public ArrayList<Restaurante> restaurantes;
+    
     
     public Sistema(int lPort){
         super(lPort);
         
         idle = new SistemaIdle(this);
         mudaEstado(idle);
+    }
+    
+    public void cadastraRestaurante(int porta){
+        if(!verificaRestaurante(porta)){
+            Restaurante r = new Restaurante(porta);
+            restaurantes.add(r);
+        }
+    }
+    
+    public boolean verificaRestaurante(int porta){
+        for(Restaurante r : restaurantes){
+            if(r.msg.lPort == porta){
+                return true;
+            }
+        }
+        return false;
     }
 }
