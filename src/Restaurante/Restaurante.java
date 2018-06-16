@@ -32,7 +32,7 @@ public class Restaurante extends Entidade{
     }
     
     public void gerarPedido(int id){
-        Pedido p = new Pedido(this.id,id);
+        Pedido p = new Pedido(msg.lPort,id);
         prontos.add(p);
     }
     

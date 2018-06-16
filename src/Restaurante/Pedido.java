@@ -10,13 +10,13 @@ package Restaurante;
  * @author lucas
  */
 public class Pedido {
-    public int idRestaurante;
+    public int portaRestaurante;
     public int idEntregador;
     public int idPedido;
     public int status; //1 - "em entrega", 2 - "entregue", 3 - "aguardando entregador"
     
-    public Pedido(int idRestaurante, int idPedido){
-        this.idRestaurante = idRestaurante;
+    public Pedido(int portaRestaurante, int idPedido){
+        this.portaRestaurante = portaRestaurante;
         this.idPedido = idPedido;
     }
 }
