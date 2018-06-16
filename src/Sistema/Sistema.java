@@ -26,11 +26,13 @@ public class Sistema extends Entidade {
         mudaEstado(idle);
     }
     
-    public void cadastraRestaurante(int porta){
+    public int cadastraRestaurante(int porta){
         if(!verificaRestaurante(porta)){
             Restaurante r = new Restaurante(porta);
             restaurantes.add(r);
+            return restaurantes.indexOf(r); // retorna posição de cadastro = ID
         }
+        return -1;// Em caso de restaurante ja cadastrado no sistema
     }
     
     public boolean verificaRestaurante(int porta){

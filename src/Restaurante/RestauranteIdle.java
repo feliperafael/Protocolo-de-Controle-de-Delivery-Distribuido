@@ -16,6 +16,7 @@ import framework.Evento;
 public class RestauranteIdle extends Estado{
     Restaurante r;
     
+    public static final int cadastroRestaurante = 0;
     public static final int solicitaEntrega = 1;    
     public static final int desalocaPedido  = 2;    
     
@@ -27,6 +28,9 @@ public class RestauranteIdle extends Estado{
     @Override
     public void transicao(Evento ev){
         switch(ev.code){
+            case cadastroRestaurante:
+                
+                break;
             case solicitaEntrega:
                 
                 break;
