@@ -65,4 +65,8 @@ public class Entidade {
        // Excuta ação de entrada
        corrente.acao();
    }
+
+    public void conecta(String localhost, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

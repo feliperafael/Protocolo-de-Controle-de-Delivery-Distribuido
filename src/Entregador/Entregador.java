@@ -9,6 +9,7 @@ import framework.Entidade;
 import framework.Estado;
 import java.util.ArrayList;
 import Restaurante.Pedido;
+import framework.Evento;
 /**
  *
  * @author lucas

@@ -20,4 +20,10 @@ public class Evento {
     public String toString(){
         return String.valueOf(codigo) + "," + portaRestaurante + "," + idPedido + "," + portaEntregador;    
     }
+
+    public class msg {
+
+        public msg() {
+        }
+    }
 }
