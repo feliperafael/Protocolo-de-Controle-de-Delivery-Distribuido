@@ -29,7 +29,7 @@ public class RestauranteIdle extends Estado{
     public void transicao(Evento ev){
         switch(ev.code){
             case cadastroRestaurante:
-                
+                //Evento e = new Evento();
                 break;
             case solicitaEntrega:
                 
