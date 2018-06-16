@@ -7,7 +7,7 @@ package Restaurante;
 
 import framework.Entidade;
 import framework.EventoThread;
-import framework.SocketThread;
+//import framework.SocketThread;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

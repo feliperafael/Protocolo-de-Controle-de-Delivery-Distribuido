@@ -15,8 +15,9 @@ public class Evento {
         idPedido = _m;
         portaEntregador = _p;
     }
+    
     @Override
     public String toString(){
-        return String.valueOf(codigo)+","+portaRestaurante+","+idPedido+","+portaEntregador;    
+        return String.valueOf(codigo) + "," + portaRestaurante + "," + idPedido + "," + portaEntregador;    
     }
 }

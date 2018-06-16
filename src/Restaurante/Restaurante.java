@@ -7,6 +7,7 @@ package Restaurante;
 
 import framework.Entidade;
 import framework.Estado;
+import framework.Evento;
 import java.util.ArrayList;
 
 /**
@@ -25,7 +26,12 @@ public class Restaurante extends Entidade{
         prontos = new ArrayList<>();
         entregues = new ArrayList<>();
         
+        // Cadastro do restaurante
+        Evento e = new Evento(0,String.valueOf(lPort),"-1","-1"); // Apenas para cadastro
         msg.conecta("localhost", 9000);
+        msg.envia(e.toString());
+        msg.termina();
+        
         idle = new RestauranteIdle(this);
         mudaEstado(idle);
         

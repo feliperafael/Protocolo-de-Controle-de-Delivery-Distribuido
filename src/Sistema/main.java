@@ -7,7 +7,7 @@ package Sistema;
 
 import framework.Entidade;
 import framework.EventoThread;
-import framework.SocketThread;
+//import framework.SocketThread;
 
 /**
  *
@@ -26,10 +26,11 @@ public class main {
     
     public static void main(String [] args){
         main m = new main();
-        m.inicia();
+        int porta = m.inicia();
+        System.out.println("Sistema rodando na porta -> " + String.valueOf(porta));
     }
     
-    public void inicia(){
+    public int inicia(){
         int porta = 9000; //FIXADA
         s = new Sistema(porta);
         
@@ -42,5 +43,7 @@ public class main {
         xthread = new SocketThread(s.msg, s);
         thread2 = new Thread(xthread);
         thread2.start();
+        
+        return porta;
     }
 }
