@@ -5,18 +5,18 @@
 package framework;
 
 public class Evento {
-    public int code;
-    public String C1;
-    public String C2;
-    public String C3;
+    public int codigo;
+    public String portaRestaurante;
+    public String idPedido;
+    public String idEntregador;
     public Evento(int _c, String _n, String _m, String _p){
-        code=_c;
-        C1=_n;
-        C2=_m;
-        C3=_p;
+        codigo = _c;
+        portaRestaurante = _n;
+        idPedido = _m;
+        idEntregador = _p;
     }
     @Override
     public String toString(){
-        return String.valueOf(code)+","+C1+","+C2+","+C3;    
+        return String.valueOf(codigo)+","+portaRestaurante+","+idPedido+","+idEntregador;    
     }
 }

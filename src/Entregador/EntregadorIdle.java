@@ -25,7 +25,7 @@ public class EntregadorIdle extends Estado{
     
     @Override
     public void transicao(Evento ev){
-        switch(ev.code){
+        switch(ev.codigo){
             case aceitaPedidoDeEntrega:
                 
                 break;

@@ -31,7 +31,7 @@ public class SistemaIdle extends Estado{
     
     @Override
     public void transicao(Evento ev){
-        switch(ev.code){
+        switch(ev.codigo){
             case recebePedidoDeEntrega:
                 
                 break;

@@ -27,7 +27,7 @@ public class RestauranteIdle extends Estado{
     
     @Override
     public void transicao(Evento ev){
-        switch(ev.code){
+        switch(ev.codigo){
             case cadastroRestaurante:
                 //Evento e = new Evento();
                 break;
