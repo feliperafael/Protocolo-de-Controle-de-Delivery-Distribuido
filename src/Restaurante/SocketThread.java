@@ -26,9 +26,4 @@ public class SocketThread extends framework.SocketThread {
         Evento e = new Evento(Integer.valueOf(codigo),portaRestaurante,idPedido,portaEntregador);
         ent.colocaEvento(e);
     }
-    
-    @Override
-    public void run(){
-        System.out.println("Digite a opção:AINDA EM ANDAMENTO");
-    }
 }

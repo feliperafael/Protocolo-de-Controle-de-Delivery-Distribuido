@@ -13,12 +13,8 @@ import framework.Evento;
  *
  * @author lucas
  */
-public class RestauranteIdle extends Estado{
-    Restaurante r;
-    
-    public static final int cadastroRestaurante = 0;
-    public static final int solicitaEntrega = 1;    
-    public static final int desalocaPedido  = 2;    
+public class RestauranteIdle extends Estado implements Runnable{
+    Restaurante r;    
     
     public RestauranteIdle(Entidade e){
         super(e);
@@ -28,16 +24,33 @@ public class RestauranteIdle extends Estado{
     @Override
     public void transicao(Evento ev){
         switch(ev.codigo){
-            case cadastroRestaurante:
+            case main.cadastroRestaurante:
+                System.out.println("Teste");
                 //Evento e = new Evento();
                 break;
-            case solicitaEntrega:
+            case main.solicitaEntrega:
                 
                 break;
-            case desalocaPedido:
+            case main.desalocaPedido:
                 
                 break;
             default:
+        }
+    }
+    
+    @Override
+    public void run(){
+        while(true){
+            Pedido p = r.gerarPedido();
+            
+            /// Gera Evento
+            Evento e = new Evento(3,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(p.idEntregador));
+                                  
+
+            /// Envia a Menssagem
+            r.msg.conecta("localhost", 9000); 
+            r.msg.envia(e.toString());
+            r.msg.termina();
         }
     }
 }

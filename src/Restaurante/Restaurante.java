@@ -8,7 +8,12 @@ package Restaurante;
 import framework.Entidade;
 import framework.Estado;
 import framework.Evento;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,9 +36,19 @@ public class Restaurante extends Entidade{
         
     }
     
-    public void gerarPedido(int id){
-        Pedido p = new Pedido(msg.lPort,id);
-        prontos.add(p);
+    public Pedido gerarPedido(){
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in)); 
+        System.out.print("Informe o ID do pedido: ");
+        try{
+            String aux = in.readLine();
+            Pedido p = new Pedido(msg.lPort,Integer.valueOf(aux));
+            prontos.add(p);
+            return p;
+        } 
+        catch(IOException ex){
+            Logger.getLogger(RestauranteIdle.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
     public void fecharPedidoEntregue(int id){
