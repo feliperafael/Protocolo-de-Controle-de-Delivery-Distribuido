@@ -25,8 +25,9 @@ public class RestauranteIdle extends Estado implements Runnable{
     public void transicao(Evento ev){
         switch(ev.codigo){
             case main.cadastroRestaurante:
-                System.out.println("Teste");
-                //Evento e = new Evento();
+                System.out.println("Restaurante cadastrado com sucesso!");
+                System.out.println("\nOpcoes:\n1 - Gerar Pedido\n");
+                new Thread(this).start();
                 break;
             case main.solicitaEntrega:
                 
@@ -44,7 +45,7 @@ public class RestauranteIdle extends Estado implements Runnable{
             Pedido p = r.gerarPedido();
             
             /// Gera Evento
-            Evento e = new Evento(3,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(p.idEntregador));
+            Evento e = new Evento(3,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(p.portaEntregador));
                                   
 
             /// Envia a Menssagem

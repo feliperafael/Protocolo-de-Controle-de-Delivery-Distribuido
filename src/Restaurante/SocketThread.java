@@ -26,4 +26,24 @@ public class SocketThread extends framework.SocketThread {
         Evento e = new Evento(Integer.valueOf(codigo),portaRestaurante,idPedido,portaEntregador);
         ent.colocaEvento(e);
     }
+    
+    @Override
+    public void run(){
+        String [] split;
+        int code;
+        String n;
+        String m;
+            while (continua) {
+                tmp=null;
+                ms.conecta(0);
+                tmp = ms.recebe(); 
+                ms.fecha_leitura();
+                //System.out.println("Mensagem recebida: "+tmp);
+                if (tmp!=null){
+                   desempacota();
+                }
+                else
+                    break;
+            }
+    }
 }

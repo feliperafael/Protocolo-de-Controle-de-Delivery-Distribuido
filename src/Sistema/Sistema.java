@@ -10,6 +10,7 @@ import framework.Entidade;
 import framework.Estado;
 import java.util.ArrayList;
 import Entregador.Entregador;
+import Restaurante.Pedido;
 
 /**
  *
@@ -19,12 +20,14 @@ public class Sistema extends Entidade {
     public Estado idle;
     public ArrayList<Restaurante> restaurantes;
     public ArrayList<Entregador> entregadores;
+    public ArrayList<Pedido> pedidosOfertados;
     
     
     public Sistema(int lPort){
         super(lPort);
         restaurantes = new ArrayList<>();
         entregadores = new ArrayList<>();
+        pedidosOfertados = new ArrayList<>();
         
         idle = new SistemaIdle(this);
         mudaEstado(idle);
@@ -68,5 +71,27 @@ public class Sistema extends Entidade {
             }
         }
         return false;
+    }
+    
+    public void adicionarPedidoOfertado(int portaRestaurante,int idPedido){
+        Pedido p = new Pedido(portaRestaurante,idPedido);
+        p.portaEntregador = -1;
+        pedidosOfertados.add(p);
+    }
+    
+    public void associarEntregadorPedido(int portaRestaurante,int idPedido,int portaEntregador){
+        for(Pedido p : pedidosOfertados){
+            if(p.portaRestaurante == portaRestaurante && p.idPedido == idPedido){
+                p.portaEntregador = portaEntregador;
+            }
+        }
+    }
+    
+    public void removerPedidoOfertado(int portaRestaurante,int idPedido,int portaEntregador ){
+        for(Pedido p : pedidosOfertados){
+            if(p.portaRestaurante == portaRestaurante && p.idPedido == idPedido && p.portaEntregador == portaEntregador){
+                pedidosOfertados.remove(p);
+            }
+        }
     }
 }

@@ -34,6 +34,7 @@ public class Restaurante extends Entidade{
         idle = new RestauranteIdle(this);
         mudaEstado(idle);
         
+        
     }
     
     public Pedido gerarPedido(){

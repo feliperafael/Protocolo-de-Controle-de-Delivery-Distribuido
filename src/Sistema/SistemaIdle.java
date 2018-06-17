@@ -33,19 +33,28 @@ public class SistemaIdle extends Estado{
     
     @Override
     public void transicao(Evento ev){
+        int portaRestaurante;
         switch(ev.codigo){
             case cadastraRestaurante:
-                int portaRestaurante = Integer.valueOf(ev.portaRestaurante);
+                portaRestaurante = Integer.valueOf(ev.portaRestaurante);
                 int teste = s.cadastraRestaurante(portaRestaurante);
-                if(teste != -1)
+                if(teste != -1){
                     System.out.println("Restaurante com a porta " + portaRestaurante + " cadastrado com sucesso.");
-                else
+                    
+                    Evento e = new Evento(0,String.valueOf(portaRestaurante),"-1","-1"); // Apenas para cadastro
+                    s.msg.conecta("localhost", portaRestaurante);
+                    s.msg.envia(e.toString());
+                    s.msg.termina();
+                    
+                }else
                     System.out.println("Restaurante já cadastrado.");
-                
-                s.mudaEstado(this);
+                //s.mudaEstado(this);
                 break;
             case recebePedidoDeEntrega:
-                
+                portaRestaurante = Integer.valueOf(ev.portaRestaurante);
+                int idPedido = Integer.valueOf(ev.idPedido);
+                s.adicionarPedidoOfertado(portaRestaurante,idPedido);
+                System.out.println("Pedido com id -> " + idPedido + " | Restaurante porta -> " + portaRestaurante + " cadastrado no sistema.\n" );
                 break;
             case divulgaPedidoDeEntrega:
                 

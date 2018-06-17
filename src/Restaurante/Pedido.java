@@ -11,16 +11,12 @@ package Restaurante;
  */
 public class Pedido {
     public int portaRestaurante;
-    public int idEntregador;
+    public int portaEntregador;
     public int idPedido;
     public int status; //1 - "em entrega", 2 - "entregue", 3 - "aguardando entregador"
     
     public Pedido(int portaRestaurante, int idPedido){
         this.portaRestaurante = portaRestaurante;
         this.idPedido = idPedido;
-    }
-
-    public Pedido() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

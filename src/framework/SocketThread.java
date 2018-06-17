@@ -22,11 +22,11 @@ public class SocketThread implements Runnable {
         String m;
             while (continua) {
                 tmp=null;
-                System.out.println("Esperando mensagem na porta "+ms.lPort); 
+                //System.out.println("Esperando mensagem na porta "+ms.lPort); 
                 ms.conecta(0);
                 tmp = ms.recebe(); 
                 ms.fecha_leitura();
-                System.out.println("Mensagem recebida: "+tmp);
+                //System.out.println("Mensagem recebida: "+tmp);
                 if (tmp!=null){
                    desempacota();
                 }

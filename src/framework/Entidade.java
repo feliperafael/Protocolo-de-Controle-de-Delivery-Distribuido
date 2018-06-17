@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class Entidade { 
    public ArrayQueue<Evento> buffer;
-   private Estado corrente;
+   public Estado corrente;
    public Msg msg;
    public EventoThread ethread; 
    public Thread thread1;

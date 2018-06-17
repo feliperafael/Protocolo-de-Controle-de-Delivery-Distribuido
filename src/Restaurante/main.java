@@ -39,9 +39,8 @@ public class main {
         System.out.print("Informe a Porta do Restaurante (Ex.: 9000): ");
         String porta = in.readLine();
         
-        m.inicia(Integer.parseInt(porta));
         System.out.println("Restaurante iniciado!");
-        System.out.println("\nOpcoes:\n1 - Gerar Pedido\n");
+        m.inicia(Integer.parseInt(porta));
     }
     
     public void inicia(int porta){
