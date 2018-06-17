@@ -17,13 +17,13 @@ import framework.Evento;
 public class Entregador extends Entidade {
     public Estado idle;
     public Estado ativo;
-    public int id;
+    public int portaEntregador;
     public ArrayList<Pedido> mochila; // pedidos que ainda não foram entregues
     public ArrayList<Pedido> pedidos_de_entrega; // buffer requisição de entregas vindas do sistema
     
     public Entregador(int lPort){
         super(lPort);
-        
+        portaEntregador = lPort;
         idle = new EntregadorIdle(this);
         ativo = new EntregadorAtivo(this);
         

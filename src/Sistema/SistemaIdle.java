@@ -55,8 +55,23 @@ public class SistemaIdle extends Estado{
                 int idPedido = Integer.valueOf(ev.idPedido);
                 s.adicionarPedidoOfertado(portaRestaurante,idPedido);
                 System.out.println("Pedido com id -> " + idPedido + " | Restaurante porta -> " + portaRestaurante + " cadastrado no sistema.\n" );
+                //Evento ev = ;
+                s.transicao(new Evento(4,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),"-1"));
+           
                 break;
             case divulgaPedidoDeEntrega:
+                System.out.println("******** DivulgaPedidoDeEntrega **********");
+                s.pedidosOfertados.forEach((p) -> {
+                    s.entregadores.forEach((entregadorAtual) -> {
+                        //envia mensagem para o entregador
+                        Evento e = new Evento(3,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),"-1");
+                        System.out.println("PORTA ENTREGADOR: "+String.valueOf(entregadorAtual.portaEntregador));
+                        /// Envia a Menssagem
+                        s.msg.conecta("localhost", (entregadorAtual.portaEntregador)); 
+                        s.msg.envia(e.toString());
+                        s.msg.termina();
+                    });
+                });
                 
                 break;
             case recebeConfirmacaoDePedidoDeEntrega:

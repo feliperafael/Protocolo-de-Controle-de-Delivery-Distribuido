@@ -18,6 +18,7 @@ public class EntregadorAtivo extends Estado {
     
     public static final int aceitaPedidoDeEntrega = 1;    
     public static final int notificaEntrega = 2;
+    public static final int recebePedidoDeEntrega = 3;
     
     public EntregadorAtivo(Entidade e){
         super(e);
@@ -31,6 +32,9 @@ public class EntregadorAtivo extends Estado {
                 
                 break;
             case notificaEntrega:
+                
+                break;
+            case recebePedidoDeEntrega:
                 
                 break;
             default:

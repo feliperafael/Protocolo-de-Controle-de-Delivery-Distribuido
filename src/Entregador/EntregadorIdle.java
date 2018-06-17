@@ -17,6 +17,7 @@ public class EntregadorIdle extends Estado{
     Entregador e;
     public static final int cadastroEntregador = 0;
     public static final int aceitaPedidoDeEntrega = 1;    
+    public static final int recebePedidoDeEntrega = 3;
     
     public EntregadorIdle(Entidade e){
         super(e);
@@ -31,6 +32,9 @@ public class EntregadorIdle extends Estado{
                 break;
             case aceitaPedidoDeEntrega:
                 
+                break;
+            case recebePedidoDeEntrega:
+                System.out.println("Recebeuuuuuuuuuuuuuu recebePedidoDeEntrega");
                 break;
             default:
         }

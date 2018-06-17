@@ -11,6 +11,7 @@ import framework.Estado;
 import java.util.ArrayList;
 import Entregador.Entregador;
 import Restaurante.Pedido;
+import framework.Evento;
 
 /**
  *
@@ -77,6 +78,16 @@ public class Sistema extends Entidade {
         Pedido p = new Pedido(portaRestaurante,idPedido);
         p.portaEntregador = -1;
         pedidosOfertados.add(p);
+        
+        printPedidosOfertados();
+    }
+    
+    private void printPedidosOfertados(){
+        //print pedidos ofertados
+        System.out.println("Pedidos ofertados -> ");
+        pedidosOfertados.forEach((x) -> {
+            System.out.println("idRestaurante: "+x.portaRestaurante+" idPedido: "+x.idPedido);
+        });    
     }
     
     public void associarEntregadorPedido(int portaRestaurante,int idPedido,int portaEntregador){
@@ -93,5 +104,23 @@ public class Sistema extends Entidade {
                 pedidosOfertados.remove(p);
             }
         }
+    }
+    /*
+        envia os pedidos ofertados aos entregadores
+    */
+    public void divulgaPedidos(){
+/*
+        pedidosOfertados.forEach((p) -> {
+            entregadores.forEach((entregadorAtual) -> {
+                //envia mensagem para o entregador
+                Evento e = new Evento(3,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(entregadorAtual.portaEntregador));
+                                  
+                /// Envia a Menssagem
+                s.msg.conecta("localhost", 9000); 
+                s.msg.envia(e.toString());
+                s.msg.termina();
+            });
+        });
+*/    
     }
 }
