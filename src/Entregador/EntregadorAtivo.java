@@ -13,12 +13,8 @@ import framework.Evento;
  *
  * @author lucas
  */
-public class EntregadorAtivo extends Estado {
+public class EntregadorAtivo extends Estado implements Runnable{
     Entregador e;
-    
-    public static final int aceitaPedidoDeEntrega = 1;    
-    public static final int notificaEntrega = 2;
-    public static final int recebePedidoDeEntrega = 3;
     
     public EntregadorAtivo(Entidade e){
         super(e);
@@ -28,16 +24,27 @@ public class EntregadorAtivo extends Estado {
     @Override
     public void transicao(Evento ev){
         switch(ev.codigo){
-            case aceitaPedidoDeEntrega:
+            case main.cadastraEntregador:
+                System.out.println("Entregador cadastrado com sucesso");
+                System.out.println("*********CADASTRO DE ENTREGADOR*********");
+                new Thread(this).start();
+                break;
+            case main.aceitaPedidoDeEntrega:
                 
                 break;
-            case notificaEntrega:
+            case main.notificaEntrega:
                 
                 break;
-            case recebePedidoDeEntrega:
+            case main.recebePedidoDeEntrega:
                 
                 break;
             default:
         }
+    }
+    
+    @Override
+    public void run(){
+        
+        System.out.println("run do Entregador");
     }
 }

@@ -28,6 +28,7 @@ public class Entregador extends Entidade {
         ativo = new EntregadorAtivo(this);
         
         mudaEstado(idle);
+        
     }
     
     private Boolean aceitaPedido(Pedido p){

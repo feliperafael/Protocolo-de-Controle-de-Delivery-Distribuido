@@ -89,9 +89,15 @@ public class SistemaIdle extends Estado{
             case cadastraEntregador:
                 int portaEntregador = Integer.valueOf(ev.portaEntregador);
                 int teste2 = s.cadastraEntregador(portaEntregador);
-                if(teste2 != -1)
+                if(teste2 != -1){
                     System.out.println("Entregador com a porta " + portaEntregador + " cadastrado com sucesso.");
-                else
+                    
+                    Evento ev_2 = new Evento(Entregador.main.cadastraEntregador,"-1","-1",String.valueOf(portaEntregador)); // 
+                    System.out.println(ev_2.toString());
+                    s.msg.conecta("localhost", portaEntregador);
+                    s.msg.envia(ev_2.toString());
+                    s.msg.termina();
+                }else
                     System.out.println("Entregador já cadastrado.");
                 
                 s.mudaEstado(this);
