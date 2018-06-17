@@ -37,16 +37,14 @@ public class Restaurante extends Entidade{
         
     }
     
-    public Pedido gerarPedido(){
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in)); 
-        System.out.print("Informe o ID do pedido: ");
+ 
+    public Pedido gerarPedido(int idPedido){
         try{
-            String aux = in.readLine();
-            Pedido p = new Pedido(msg.lPort,Integer.valueOf(aux));
+            Pedido p = new Pedido(msg.lPort,idPedido);
             prontos.add(p);
             return p;
         } 
-        catch(IOException ex){
+        catch(Exception ex){
             Logger.getLogger(RestauranteIdle.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

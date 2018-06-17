@@ -56,4 +56,25 @@ public class Entregador extends Entidade {
     private void LimpaBufferDePedidosDeEntrega(){
         pedidos_de_entrega.clear();
     }
+    
+    public void listaPedidosdeEntrega(){
+        System.out.println("------ Pedidos de Entrega -------");
+        pedidos_de_entrega.forEach((p) -> {
+            System.out.println("idPedido: "+p.idPedido+ "| idRestaurante: "+p.portaRestaurante);
+        });
+        
+    }
+    
+    public void listaMochila(){
+        System.out.println("------ Mochila -------");
+        mochila.forEach((p) -> {
+            System.out.println("idPedido: "+p.idPedido+ "| idRestaurante: "+p.portaRestaurante);
+        });
+        
+    }
+    
+    public void listaMenu(){
+        System.out.println("\nOpções:\n 1 - Aceitar entrega de pedido (Ex.: idPedido,idRestaurante)\n 2 - Notificar entrega de pedido(Ex.: idPedido,idRestaurante)\n");
+        System.out.println("3 - Listar pedidos de entrega\n4 - Listar itens na mochila");
+    }
 }

@@ -8,6 +8,11 @@ package Restaurante;
 import framework.Entidade;
 import framework.Estado;
 import framework.Evento;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,7 +35,10 @@ public class RestauranteIdle extends Estado implements Runnable{
                 new Thread(this).start();
                 break;
             case main.solicitaEntrega:
-                
+                Evento e = new Evento(3,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),String.valueOf(ev.portaEntregador));
+                r.msg.conecta("localhost", 9000); 
+                r.msg.envia(e.toString());
+                r.msg.termina();                
                 break;
             case main.desalocaPedido:
                 
@@ -42,16 +50,24 @@ public class RestauranteIdle extends Estado implements Runnable{
     @Override
     public void run(){
         while(true){
-            Pedido p = r.gerarPedido();
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in)); 
+            System.out.print("Informe o ID do pedido: ");
+            String aux;
+            try{
+                aux = in.readLine(); 
+              
+            }catch(IOException | NumberFormatException ex){
+                aux = "-1";
+            }
+            int idPedido = Integer.valueOf(aux);
+            System.out.println(idPedido);
+            Pedido p = r.gerarPedido(idPedido);
             
-            /// Gera Evento
-            Evento e = new Evento(3,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(p.portaEntregador));
                                   
-
-            /// Envia a Menssagem
-            r.msg.conecta("localhost", 9000); 
-            r.msg.envia(e.toString());
-            r.msg.termina();
+            //transição 1 - solicita entrega
+            //gera evento que solicita entrega
+            r.transicao(new Evento(1,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(p.portaEntregador)));
+           
         }
     }
 }
