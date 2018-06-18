@@ -6,6 +6,7 @@
 package Entregador;
 
 import Restaurante.Pedido;
+import static Sistema.SistemaIdle.recebeConfirmacaoDePedidoDeEntrega;
 import framework.Entidade;
 import framework.Estado;
 import framework.Evento;
@@ -40,6 +41,10 @@ public class EntregadorIdle extends Estado implements Runnable{
                 break;
             case aceitaPedidoDeEntrega:
                 System.out.println("Aceitando pedido de entrega...");
+                Evento ev_2 = new Evento(Sistema.SistemaIdle.recebeConfirmacaoDePedidoDeEntrega,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),String.valueOf(ev.portaEntregador));
+                e.msg.conecta("localhost", 9000); 
+                e.msg.envia(ev_2.toString());
+                e.msg.termina();  
                 break;
             case recebePedidoDeEntrega:
                 System.out.println("recebePedidoDeEntrega");

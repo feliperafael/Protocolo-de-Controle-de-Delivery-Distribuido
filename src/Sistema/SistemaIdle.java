@@ -75,10 +75,10 @@ public class SistemaIdle extends Estado{
                 
                 break;
             case recebeConfirmacaoDePedidoDeEntrega:
-                
+                System.out.println("_______________recebeConfirmacaoDePedidoDeEntrega______________");
                 break;
             case recebeConfirmacaoDeEntrega:
-                
+               
                 break;
             case enviaConfirmacaoDePedidoDeEntrega:
                 

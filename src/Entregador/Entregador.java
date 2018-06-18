@@ -60,7 +60,7 @@ public class Entregador extends Entidade {
                 return true;
             }
         }
-       return false;
+        return false;
     }
     
     public void SinalizaEntregaDePedido(Pedido p){
