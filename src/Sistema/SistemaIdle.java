@@ -76,6 +76,13 @@ public class SistemaIdle extends Estado{
                 break;
             case recebeConfirmacaoDePedidoDeEntrega:
                 System.out.println("_______________recebeConfirmacaoDePedidoDeEntrega______________");
+                if(s.associarEntregadorPedido(ev.portaRestaurante, ev.idPedido, ev.portaEntregador)){
+                     System.out.println("Associado com sucesso");
+                     //respode para entregador avisando que ele conseguiu aceitar
+                }else{
+                     System.out.println("alguem já aceitou essa entrega");
+                     //responde para o entregador avisando que a entrega não está disponivel
+                }
                 break;
             case recebeConfirmacaoDeEntrega:
                
