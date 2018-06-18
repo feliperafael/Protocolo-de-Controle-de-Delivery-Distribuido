@@ -34,6 +34,7 @@ public class EntregadorIdle extends Estado implements Runnable{
     
     @Override
     public void transicao(Evento ev){
+        System.out.println("Estado atual: EntregadorIdle");
         switch(ev.codigo){
             case cadastroEntregador:
                 System.out.println("Cadastrou entregador");
@@ -60,6 +61,8 @@ public class EntregadorIdle extends Estado implements Runnable{
                 }
                 int indice = e.getIndicePedidoEntrega(Integer.valueOf(ev.portaRestaurante), Integer.valueOf(ev.idPedido));
                 e.pedidos_de_entrega.remove(indice);  //remove da lista de pedidos_de_entrega
+                
+                e.mudaEstado(e.ativo);//vai para estado ativo
               
                 break;
             default:
@@ -84,8 +87,10 @@ public class EntregadorIdle extends Estado implements Runnable{
             }catch(IOException | NumberFormatException ex){
                 aux = "-1";
             }
-            switch(Integer.valueOf(aux)){
+            int opcao = Integer.valueOf(aux);
+            switch(opcao){
                 case 1:
+                    //se existe algum pedido pra aceitar
                     if(!e.pedidos_de_entrega.isEmpty()){
                         System.out.println("Digite o id do pedido de entrega que deseja aceitar:");
                         e.listaPedidosdeEntrega();
@@ -99,10 +104,31 @@ public class EntregadorIdle extends Estado implements Runnable{
                             Pedido p = e.pedidos_de_entrega.get(k);
                             e.transicao(new Evento(aceitaPedidoDeEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(e.portaEntregador)));
                         }
+                    }else{
+                        System.out.println("Você ainda não tem nenhum pedido pra aceitar");
                     }
                     break;
                 case 2:
-                    System.out.println("Digite o idPedido,idRestaurante do pedido que deseja notificar a entrega:");
+                    //isso só pode acontecer no estado "Em Entrega"
+                    //tirar daqui
+                    System.out.println("Você precisa estar no estado em entrega para confirmar a entrega");
+                    /*
+                    if(!e.mochila.isEmpty()){
+                        System.out.println("Digite o id do pedido que deseja notificar a entrega:");
+                        e.listaMochila();
+                        Integer k2 = -1;
+                        try {
+                            k2 = Integer.valueOf(in.readLine());
+                        } catch (IOException ex) {
+                            Logger.getLogger(EntregadorIdle.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        if(k2>=0){
+                            Pedido p2 = e.mochila.get(k2);
+                            e.transicao(new Evento(aceitaPedidoDeEntrega,String.valueOf(p2.portaRestaurante),String.valueOf(p2.idPedido),String.valueOf(e.portaEntregador)));
+                        }
+                    }else{
+                        System.out.println("Nada para aceitar...");
+                    }*/
                     break;
                 case 3:
                     e.listaPedidosdeEntrega();

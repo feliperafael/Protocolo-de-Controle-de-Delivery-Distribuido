@@ -100,13 +100,15 @@ public class Entregador extends Entidade {
     }
     
     public void listaMochila(){
-        System.out.println("------ Mochila -------");
+        System.out.println("------- Mochila --------");
         if(mochila.isEmpty()){
             System.out.println("Vazia");
         }
-        mochila.forEach((p) -> {
-            System.out.println("idPedido: "+p.idPedido+ "| idRestaurante: "+p.portaRestaurante);
-        });
+        int i = 0;
+        for(Pedido p : mochila){
+            System.out.println(" "+i+") idPedido: "+p.idPedido+ "| idRestaurante: "+p.portaRestaurante);
+            i++;
+        }
         
         
     }
@@ -117,13 +119,13 @@ public class Entregador extends Entidade {
     }
     
         public void printMenu(){
-        System.out.println("--------------------------- Menu ---------------------------------");
-        System.out.println("- 1  Aceitar entrega de pedido (Ex.: idPedido,idRestaurante)     -");
-        System.out.println("- 2  Notificar entrega de pedido (Ex.: idPedido,idRestaurante)   -");
-        System.out.println("- 3  Listar pedidos de entrega                                   -");
-        System.out.println("- 4  Listar itens na mochila                                     -");
-        System.out.println("-                                                                -");
-        System.out.println("-                                                                -");
-        System.out.println("------------------------------------------------------------------");
+        System.out.println("----------------- Menu ------------------");
+        System.out.println("- 1  Aceitar entrega de pedido          -");
+        System.out.println("- 2  Notificar entrega de pedido        -");
+        System.out.println("- 3  Listar pedidos de entrega          -");
+        System.out.println("- 4  Listar itens na mochila            -");
+        System.out.println("-                                       -");
+        System.out.println("-                                       -");
+        System.out.println("-----------------------------------------");
     }
 }

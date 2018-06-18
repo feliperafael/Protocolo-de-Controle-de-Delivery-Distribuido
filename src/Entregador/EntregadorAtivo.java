@@ -5,9 +5,16 @@
  */
 package Entregador;
 
+import static Entregador.EntregadorIdle.aceitaPedidoDeEntrega;
+import Restaurante.Pedido;
 import framework.Entidade;
 import framework.Estado;
 import framework.Evento;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,28 +30,101 @@ public class EntregadorAtivo extends Estado implements Runnable{
     
     @Override
     public void transicao(Evento ev){
+        System.out.println("Estado atual: EntregadorAtivo");
         switch(ev.codigo){
-            case main.cadastraEntregador:
-                System.out.println("Entregador cadastrado com sucesso");
-                System.out.println("*********CADASTRO DE ENTREGADOR*********");
-                new Thread(this).start();
-                break;
             case main.aceitaPedidoDeEntrega:
+                System.out.println("Aceitando pedido de entrega...");
+                Evento ev_2 = new Evento(Sistema.SistemaIdle.recebeConfirmacaoDePedidoDeEntrega,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),String.valueOf(ev.portaEntregador));
+                e.msg.conecta("localhost", 9000); 
+                e.msg.envia(ev_2.toString());
+                e.msg.termina();  
                 
                 break;
             case main.notificaEntrega:
+                System.out.println("Noticando entrega ao restaurante.");
                 
                 break;
             case main.recebePedidoDeEntrega:
-                
+                System.out.println("recebePedidoDeEntrega");
+                e.RecebePedidoDeEntrega(ev);
                 break;
             default:
         }
     }
     
-    @Override
-    public void run(){
-        
-        System.out.println("run do Entregador");
+      @Override
+    public void run(){  
+        /*
+        "- 1  Aceitar entrega de pedido (Ex.: idPedido,idRestaurante)     -"
+        "- 2  Notificar entrega de pedido (Ex.: idPedido,idRestaurante)   -"
+        "- 3  Listar pedidos de entrega                                   -"
+        "- 4  Listar itens na mochila                                     -"
+        */
+        while(true){
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in)); 
+            //print Menu
+            e.printMenu();
+            String aux;
+            try{
+                aux = in.readLine();               
+            }catch(IOException | NumberFormatException ex){
+                aux = "-1";
+            }
+            int opcao = Integer.valueOf(aux);
+            switch(opcao){
+                case 1:
+                    //se existe algum pedido pra aceitar
+                    if(!e.pedidos_de_entrega.isEmpty()){
+                        System.out.println("Digite o id do pedido de entrega que deseja aceitar:");
+                        e.listaPedidosdeEntrega();
+                        Integer k = -1;
+                        try {
+                            k = Integer.valueOf(in.readLine());
+                        } catch (IOException ex) {
+                            Logger.getLogger(EntregadorIdle.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        if(k>=0){
+                            Pedido p = e.pedidos_de_entrega.get(k);
+                            e.transicao(new Evento(main.aceitaPedidoDeEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(e.portaEntregador)));
+                        }
+                    }else{
+                        System.out.println("Você ainda não tem nenhum pedido pra aceitar");
+                    }
+                    break;
+                case 2:
+                    if(!e.mochila.isEmpty()){
+                        System.out.println("Digite o id do pedido que deseja notificar a entrega:");
+                        e.listaMochila();
+                        Integer k2 = -1;
+                        try {
+                            k2 = Integer.valueOf(in.readLine());
+                        } catch (IOException ex) {
+                            Logger.getLogger(EntregadorIdle.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        if(k2>=0){
+                            Pedido p2 = e.mochila.get(k2);
+                            e.transicao(new Evento(main.notificaEntrega,String.valueOf(p2.portaRestaurante),String.valueOf(p2.idPedido),String.valueOf(e.portaEntregador)));
+                        }
+                    }else{
+                        System.out.println("Nada para aceitar...");
+                    }
+                    break;
+                case 3:
+                    e.listaPedidosdeEntrega();
+                    break;
+                case 4:
+                    e.listaMochila();
+                    break;
+                    
+                default:
+                    
+            }
+            try {
+                System.out.println("\nPrecione enter para continuar...");
+                aux = in.readLine();
+            } catch (IOException ex) {
+                Logger.getLogger(EntregadorIdle.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }
