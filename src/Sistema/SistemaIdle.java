@@ -5,6 +5,7 @@
  */
 package Sistema;
 
+import static Entregador.EntregadorIdle.confirmacaoDeAceite;
 import framework.Entidade;
 import framework.Estado;
 import framework.Evento;
@@ -60,25 +61,34 @@ public class SistemaIdle extends Estado{
            
                 break;
             case divulgaPedidoDeEntrega:
+                //todos que ainda não tem entregador vinculado
                 System.out.println("******** DivulgaPedidoDeEntrega **********");
                 s.pedidosOfertados.forEach((p) -> {
-                    s.entregadores.forEach((entregadorAtual) -> {
-                        //envia mensagem para o entregador
-                        Evento e = new Evento(3,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),"-1");
-                        System.out.println("PORTA ENTREGADOR: "+String.valueOf(entregadorAtual.portaEntregador));
-                        /// Envia a Menssagem
-                        s.msg.conecta("localhost", (entregadorAtual.portaEntregador)); 
-                        s.msg.envia(e.toString());
-                        s.msg.termina();
-                    });
+                    if(p.portaEntregador < 1){
+                        s.entregadores.forEach((entregadorAtual) -> {
+                            //envia mensagem para o entregador
+                            Evento e = new Evento(3,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),"-1");
+                            System.out.println("PORTA ENTREGADOR: "+String.valueOf(entregadorAtual.portaEntregador));
+                            /// Envia a Menssagem
+                            s.msg.conecta("localhost", (entregadorAtual.portaEntregador)); 
+                            s.msg.envia(e.toString());
+                            s.msg.termina();
+                        });
+                    }
                 });
                 
                 break;
             case recebeConfirmacaoDePedidoDeEntrega:
                 System.out.println("_______________recebeConfirmacaoDePedidoDeEntrega______________");
-                if(s.associarEntregadorPedido(ev.portaRestaurante, ev.idPedido, ev.portaEntregador)){
-                     System.out.println("Associado com sucesso");
-                     //respode para entregador avisando que ele conseguiu aceitar
+                if(s.associarEntregadorPedido(Integer.valueOf(ev.portaRestaurante), Integer.valueOf(ev.idPedido), Integer.valueOf(ev.portaEntregador))){
+                    System.out.println("Associado com sucesso");
+                    //respode para entregador avisando que ele conseguiu aceitar
+                    Evento ev_3 = new Evento(Entregador.EntregadorIdle.confirmacaoDeAceite,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),ev.portaEntregador);
+                   
+                    /// Envia a Menssagem
+                    s.msg.conecta("localhost", Integer.valueOf(ev.portaEntregador)); 
+                    s.msg.envia(ev_3.toString());
+                    s.msg.termina();
                 }else{
                      System.out.println("alguem já aceitou essa entrega");
                      //responde para o entregador avisando que a entrega não está disponivel

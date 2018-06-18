@@ -25,6 +25,7 @@ public class EntregadorIdle extends Estado implements Runnable{
     public static final int cadastroEntregador = 0;
     public static final int aceitaPedidoDeEntrega = 1;    
     public static final int recebePedidoDeEntrega = 3;
+    public static final int confirmacaoDeAceite = 4;
     
     public EntregadorIdle(Entidade e){
         super(e);
@@ -50,6 +51,17 @@ public class EntregadorIdle extends Estado implements Runnable{
                 System.out.println("recebePedidoDeEntrega");
                 e.RecebePedidoDeEntrega(ev);
                 break;
+            case confirmacaoDeAceite:
+                System.out.println("ACK de aceite");
+                if(Integer.valueOf(ev.portaEntregador) == (e.portaEntregador)){
+                 // coloca na mochila
+                 System.out.println("Colocando na mochila");
+                 e.adicionaNaMochila(new Pedido(Integer.valueOf(ev.portaRestaurante),Integer.valueOf(ev.idPedido)));
+                }
+                int indice = e.getIndicePedidoEntrega(Integer.valueOf(ev.portaRestaurante), Integer.valueOf(ev.idPedido));
+                e.pedidos_de_entrega.remove(indice);  //remove da lista de pedidos_de_entrega
+              
+                break;
             default:
         }
     }
@@ -74,17 +86,19 @@ public class EntregadorIdle extends Estado implements Runnable{
             }
             switch(Integer.valueOf(aux)){
                 case 1:
-                    System.out.println("Digite o id do pedido de entrega que deseja aceitar:");
-                    e.listaPedidosdeEntrega();
-                    Integer k = -1;
-                    try {
-                        k = Integer.valueOf(in.readLine());
-                    } catch (IOException ex) {
-                        Logger.getLogger(EntregadorIdle.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    if(k>=0){
-                        Pedido p = e.pedidos_de_entrega.get(k);
-                        e.transicao(new Evento(aceitaPedidoDeEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(e.portaEntregador)));
+                    if(!e.pedidos_de_entrega.isEmpty()){
+                        System.out.println("Digite o id do pedido de entrega que deseja aceitar:");
+                        e.listaPedidosdeEntrega();
+                        Integer k = -1;
+                        try {
+                            k = Integer.valueOf(in.readLine());
+                        } catch (IOException ex) {
+                            Logger.getLogger(EntregadorIdle.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        if(k>=0){
+                            Pedido p = e.pedidos_de_entrega.get(k);
+                            e.transicao(new Evento(aceitaPedidoDeEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(e.portaEntregador)));
+                        }
                     }
                     break;
                 case 2:

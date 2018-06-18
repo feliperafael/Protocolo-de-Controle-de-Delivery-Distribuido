@@ -34,8 +34,24 @@ public class Entregador extends Entidade {
         mudaEstado(idle);
         
     }
-      
-    private Boolean aceitaPedido(int idPedidoEntrega){
+    
+    public int getIndicePedidoEntrega(int idRestaurante,int idPedido){
+        int i = 0;
+        for(Pedido ped : pedidos_de_entrega){
+            if(ped.idPedido == idPedido && ped.portaRestaurante== idRestaurante){
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    
+    }
+    
+    public void adicionaNaMochila(Pedido p){
+        mochila.add(p);
+    }
+    //não esta sendo usada  
+    public Boolean aceitaPedido(int idPedidoEntrega){
         //envia mensagem para o sistema dizendo que quer aceitar o pedido
         //se conseguir aceitar o pedido retorna true
         Pedido p = pedidos_de_entrega.get(idPedidoEntrega);
