@@ -7,9 +7,9 @@ package framework;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class Timeout implements Runnable{
-    Entidade ent;
-    int tempo;
-    boolean ativo;
+    protected Entidade ent;
+    protected int tempo;
+    protected boolean ativo;
     public Timeout(Entidade _ent, int _tempo){
         ent=_ent;
         tempo=_tempo;

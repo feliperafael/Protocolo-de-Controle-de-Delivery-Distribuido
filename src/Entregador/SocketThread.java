@@ -5,9 +5,6 @@ import framework.Evento;
 import framework.Msg;
 
 public class SocketThread extends framework.SocketThread {
-    //int idRecurso;
-    //int portaProcesso;
-    //int codigo;
     String codigo;
     String portaRestaurante;
     String idPedido;
@@ -18,11 +15,6 @@ public class SocketThread extends framework.SocketThread {
     }
     @Override
     public void desempacota(){
-        /// Desempacota Mensagem
-        
-        //Evento e = new Evento(codigo, idRecurso, portaProcesso); /// Cria Evento
-        //ent.colocaEvento(e); /// Coloca no Buffer da Entidade
-        
          /// Desempacota Mensagem
         String[] split;
         split = tmp.split(",");

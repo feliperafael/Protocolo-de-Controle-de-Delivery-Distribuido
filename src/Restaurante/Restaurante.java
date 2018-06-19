@@ -50,13 +50,48 @@ public class Restaurante extends Entidade{
         return null;
     }
     
-    public void fecharPedidoEntregue(int id){
+    public void fecharPedidoEntregue(int id,int portaEntregador){
         for(int i = 0; i < prontos.size(); i++){
             if(prontos.get(i).idPedido == id){
                 Pedido removido = prontos.get(i);
+                removido.portaEntregador = portaEntregador;
                 entregues.add(removido);
                 prontos.remove(i);
             }
+        }
+    }
+    
+    public void printMenu(){
+        System.out.println("----------------- Menu ------------------");
+        System.out.println("- 1  Gerar Pedido                       -");
+        System.out.println("- 2  Listar pedidos prontos             -");
+        System.out.println("- 3  Listar pedidos entregues           -");
+        System.out.println("-                                       -");
+        System.out.println("-                                       -");
+        System.out.println("-----------------------------------------");
+    }
+    
+    public void listarPedidoProntos(){
+        System.out.println("------ Pedidos Prontos -------");
+        if(prontos.isEmpty()){
+            System.out.println("Vazia");
+        }
+        int i = 0;
+        for(Pedido p : prontos){
+            System.out.println(" " + i + ") idPedido: " + p.idPedido);
+            i += 1;
+        }
+    }
+    
+    public void listarPedidoEntregues(){
+        System.out.println("------ Pedidos Entregues -------");
+        if(entregues.isEmpty()){
+            System.out.println("Vazia");
+        }
+        int i = 0;
+        for(Pedido p : entregues){
+            System.out.println(" " + i + ") idPedido: " + p.idPedido + "| Entregador: " + p.portaEntregador);
+            i += 1;
         }
     }
     

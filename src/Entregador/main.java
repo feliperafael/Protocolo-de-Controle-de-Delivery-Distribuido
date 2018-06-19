@@ -30,8 +30,10 @@ public class main {
     
     public static final int cadastraEntregador = 9;
     public static final int aceitaPedidoDeEntrega = 1;    
-    public static final int notificaEntrega = 2;
+    public static final int notificaEntrega = 6;
     public static final int recebePedidoDeEntrega = 3;
+    public static final int confirmacaoDeAceite = 4;
+    public static final int erroPedidoJaAceito = 5;
     
     public static void main(String [] args) throws IOException{
         main m = new main();
@@ -42,7 +44,6 @@ public class main {
         
         m.inicia(Integer.parseInt(porta));
         System.out.println("Entregador iniciado!");
-        System.out.println("\nOpções:\n 1 - Aceitar entrega de pedido (Ex.: idPedido,idRestaurante)\n 2 - Notificar entrega de pedido(Ex.: idPedido,idRestaurante)\n");
     }
     
     public void inicia(int porta){

@@ -30,7 +30,7 @@ public class main {
     
     public static final int cadastroRestaurante = 0;
     public static final int solicitaEntrega = 1;    
-    public static final int desalocaPedido  = 2;
+    public static final int entregaNotificada  = 6;
     
     public static void main(String [] args) throws IOException{
         main m = new main();

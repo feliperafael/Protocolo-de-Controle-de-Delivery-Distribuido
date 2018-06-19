@@ -22,9 +22,9 @@ public class Entidade {
        buffer = new ArrayQueue<Evento>(0xa);
        msg =new Msg(lport);
        // inicia thread de tratamento de eventos
-       ethread = new EventoThread(this);
-       thread1=new Thread(ethread);
-       thread1.start();
+       //ethread = new EventoThread(this);
+       //thread1=new Thread(ethread);
+       //thread1.start();
    }
    
    public void transicao(Evento _e){
@@ -32,15 +32,17 @@ public class Entidade {
    }
    
    public Evento pegaEvento(){
-       Evento e = null;
-       if(buffer.size()>0){
-           e = buffer.get(0);
-           buffer.remove(0);
-       }
-       return e;
+        Evento e = null;
+        if(buffer.size()>0){
+            e = buffer.get(0);
+            
+            buffer.remove(0);
+        }
+        return e;
    }
    
-   public void colocaEvento(Evento _e){
+   //possivel melhoria
+   public synchronized void colocaEvento(Evento _e){
         buffer.add(_e);
    } 
    

@@ -39,7 +39,7 @@ public class SocketThread extends framework.SocketThread {
                 ms.conecta(0);
                 tmp = ms.recebe(); 
                 ms.fecha_leitura();
-                System.out.println("Mensagem recebida: "+tmp);
+                //System.out.println("Mensagem recebida: "+tmp);
                 if (tmp!=null){
                    desempacota();
                 }

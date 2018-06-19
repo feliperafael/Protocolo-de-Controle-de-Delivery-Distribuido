@@ -31,7 +31,6 @@ public class RestauranteIdle extends Estado implements Runnable{
         switch(ev.codigo){
             case main.cadastroRestaurante:
                 System.out.println("Restaurante cadastrado com sucesso!");
-                System.out.println("\nOpcoes:\n1 - Gerar Pedido\n");
                 new Thread(this).start();
                 break;
             case main.solicitaEntrega:
@@ -40,8 +39,9 @@ public class RestauranteIdle extends Estado implements Runnable{
                 r.msg.envia(e.toString());
                 r.msg.termina();                
                 break;
-            case main.desalocaPedido:
-                
+            case main.entregaNotificada:
+                System.out.println("Entrega do pedido com id " + ev.idPedido + " confirmada.");
+                r.fecharPedidoEntregue(Integer.valueOf(ev.idPedido),Integer.valueOf(ev.portaEntregador));
                 break;
             default:
         }
@@ -50,23 +50,47 @@ public class RestauranteIdle extends Estado implements Runnable{
     @Override
     public void run(){
         while(true){
+            /*
+            "- 1  Gerar Pedido     -"
+            "- 2  Listar pedidos a ser entregue.   -"
+            "- 3  Listar pedidos entregues.                                   -"                                   -"
+            */
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in)); 
-            System.out.print("Informe o ID do pedido: ");
+            r.printMenu();
+            
             String aux;
             try{
-                aux = in.readLine(); 
-              
+                aux = in.readLine();               
             }catch(IOException | NumberFormatException ex){
                 aux = "-1";
             }
-            int idPedido = Integer.valueOf(aux);
-            System.out.println(idPedido);
-            Pedido p = r.gerarPedido(idPedido);
-            
-                                  
-            //transição 1 - solicita entrega
-            //gera evento que solicita entrega
-            r.transicao(new Evento(1,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(p.portaEntregador)));
+            int opcao = Integer.valueOf(aux);
+            switch(opcao){
+                case 1: 
+                    System.out.print("Informe o ID do pedido: ");
+                    try{
+                        aux = in.readLine(); 
+
+                    }catch(IOException | NumberFormatException ex){
+                        aux = "-1";
+                    }
+                    int idPedido = Integer.valueOf(aux);
+                    System.out.println(idPedido);
+                    Pedido p = r.gerarPedido(idPedido);
+
+
+                    //transição 1 - solicita entrega
+                    //gera evento que solicita entrega
+                    r.transicao(new Evento(main.solicitaEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(p.portaEntregador)));
+                    break;
+                case 2:
+                    r.listarPedidoProntos();
+                    break;
+                case 3:
+                    r.listarPedidoEntregues();
+                    break;
+                default:
+            }
            
         }
     }

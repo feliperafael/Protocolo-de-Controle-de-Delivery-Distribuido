@@ -90,12 +90,17 @@ public class Sistema extends Entidade {
         });    
     }
     
-    public void associarEntregadorPedido(int portaRestaurante,int idPedido,int portaEntregador){
+    public boolean associarEntregadorPedido(int portaRestaurante,int idPedido,int portaEntregador){
         for(Pedido p : pedidosOfertados){
             if(p.portaRestaurante == portaRestaurante && p.idPedido == idPedido){
-                p.portaEntregador = portaEntregador;
+                
+                if(p.portaEntregador<=0){ //posso associar
+                    p.portaEntregador = portaEntregador;
+                    return true;
+                }
             }
         }
+        return false;
     }
     
     public void removerPedidoOfertado(int portaRestaurante,int idPedido,int portaEntregador ){
