@@ -64,7 +64,13 @@ public class RestauranteIdle extends Estado implements Runnable{
             }catch(IOException | NumberFormatException ex){
                 aux = "-1";
             }
-            int opcao = Integer.valueOf(aux);
+            int opcao;
+            try{
+                opcao = Integer.valueOf(aux);
+            }catch(NumberFormatException e){
+                opcao = 0;
+            }
+         
             switch(opcao){
                 case 1: 
                     System.out.print("Informe o ID do pedido: ");

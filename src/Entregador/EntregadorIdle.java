@@ -104,6 +104,7 @@ public class EntregadorIdle extends Estado implements Runnable{
                             k = Integer.valueOf(in.readLine());
                         } catch (IOException ex) {
                             Logger.getLogger(EntregadorIdle.class.getName()).log(Level.SEVERE, null, ex);
+                            k = 0;
                         }
                         if(k>=0){
                             Pedido p = e.pedidos_de_entrega.get(k);
