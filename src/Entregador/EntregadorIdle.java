@@ -105,8 +105,12 @@ public class EntregadorIdle extends Estado implements Runnable{
                             k = 0;
                         }
                         if(k>=0){
-                            Pedido p = e.pedidos_de_entrega.get(k);
-                            e.transicao(new Evento(Entregador.aceitaPedidoDeEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(e.portaEntregador)));
+                            if(k < e.pedidos_de_entrega.size()){
+                                Pedido p = e.pedidos_de_entrega.get(k);
+                                e.transicao(new Evento(Entregador.aceitaPedidoDeEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(e.portaEntregador)));
+                            }else{
+                                System.out.println("ID Inválido.");
+                            }
                         }
                     }else{
                         System.out.println("Você ainda não tem nenhum pedido pra aceitar");
