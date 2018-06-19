@@ -25,6 +25,10 @@ public class Restaurante extends Entidade{
     public ArrayList<Pedido> prontos;
     public ArrayList<Pedido> entregues;
     
+    public static final int cadastroRestaurante = 0;
+    public static final int solicitaEntrega = 1;    
+    public static final int entregaNotificada  = 6;
+    
     public Restaurante(int lPort){
         super(lPort);
         

@@ -23,6 +23,15 @@ public class Sistema extends Entidade {
     public ArrayList<Entregador> entregadores;
     public ArrayList<Pedido> pedidosOfertados;
     
+    public static final int cadastraRestaurante = 0;
+    public static final int recebePedidoDeEntrega = 3;    
+    public static final int divulgaPedidoDeEntrega = 4;
+    public static final int recebeConfirmacaoDePedidoDeEntrega = 5;
+    public static final int recebeConfirmacaoDeEntrega = 6;
+    public static final int enviaConfirmacaoDePedidoDeEntrega = 7;
+    public static final int enviaConfirmacaoDeEntrega = 8;
+    public static final int cadastraEntregador = 9;
+    
     
     public Sistema(int lPort){
         super(lPort);

@@ -28,12 +28,7 @@ public class main {
     
     Entidade e;
     
-    public static final int cadastraEntregador = 9;
-    public static final int aceitaPedidoDeEntrega = 1;    
-    public static final int notificaEntrega = 6;
-    public static final int recebePedidoDeEntrega = 3;
-    public static final int confirmacaoDeAceite = 4;
-    public static final int erroPedidoJaAceito = 5;
+
     
     public static void main(String [] args) throws IOException{
         main m = new main();
@@ -61,7 +56,7 @@ public class main {
         
         
         // Cadastro do Entregador
-        Evento ev = new Evento(cadastraEntregador,"-1","-1",String.valueOf(porta)); // Apenas para cadastro
+        Evento ev = new Evento(Entregador.cadastraEntregador,"-1","-1",String.valueOf(porta)); // Apenas para cadastro
         
         //e.transicao(new Evento(cadastraEntregador,"-1","-1",String.valueOf(porta)));
         e.msg.conecta("localhost", 9000);

@@ -5,8 +5,8 @@
  */
 package Entregador;
 
-import static Entregador.EntregadorIdle.aceitaPedidoDeEntrega;
 import Restaurante.Pedido;
+import Sistema.Sistema;
 import framework.Entidade;
 import framework.Estado;
 import framework.Evento;
@@ -32,16 +32,15 @@ public class EntregadorAtivo extends Estado implements Runnable{
     public void transicao(Evento ev){
         //System.out.println("Estado atual: EntregadorAtivo");
         switch(ev.codigo){
-            case main.aceitaPedidoDeEntrega:
+            case Entregador.aceitaPedidoDeEntrega:
                 System.out.println("Aceitando pedido de entrega...");
-                Evento ev_2 = new Evento(Sistema.SistemaIdle.recebeConfirmacaoDePedidoDeEntrega,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),String.valueOf(ev.portaEntregador));
+                Evento ev_2 = new Evento(Sistema.recebeConfirmacaoDePedidoDeEntrega,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),String.valueOf(ev.portaEntregador));
                 e.msg.conecta("localhost", 9000); 
                 e.msg.envia(ev_2.toString());
                 e.msg.termina();  
                 
                 break;
-            case main.confirmacaoDeAceite:
-                System.out.println("ACK de aceite");
+            case Entregador.confirmacaoDeAceite:
                 if(Integer.valueOf(ev.portaEntregador) == (e.portaEntregador)){
                     // coloca na mochila
                     System.out.println("Colocando na mochila");
@@ -53,13 +52,13 @@ public class EntregadorAtivo extends Estado implements Runnable{
                 e.mudaEstado(e.ativo);//vai para estado ativo
               
                 break;
-            case main.erroPedidoJaAceito:
+            case Entregador.erroPedidoJaAceito:
                 System.out.println("Erro -> Pedido solicitado já foi aceito por outro Entregador.");
                 int i = e.getIndicePedidoEntrega(Integer.valueOf(ev.portaRestaurante),Integer.valueOf(ev.idPedido));
                 //Se o pedido ja nao ta disponivel mais, remove ele da lista
                 e.pedidos_de_entrega.remove(i);
                 break;
-            case main.notificaEntrega:
+            case Entregador.notificaEntrega:
                 System.out.println("Notificando entrega ao restaurante.");
                 e.msg.conecta("localhost", Integer.valueOf(ev.portaRestaurante)); 
                 e.msg.envia(ev.toString());
@@ -69,7 +68,7 @@ public class EntregadorAtivo extends Estado implements Runnable{
                     e.mudaEstado(e.idle);
                 }
                 break;
-            case main.recebePedidoDeEntrega:
+            case Entregador.recebePedidoDeEntrega:
                 System.out.println("recebePedidoDeEntrega");
                 e.RecebePedidoDeEntrega(ev);
                 break;
@@ -110,7 +109,7 @@ public class EntregadorAtivo extends Estado implements Runnable{
                         }
                         if(k>=0){
                             Pedido p = e.pedidos_de_entrega.get(k);
-                            e.transicao(new Evento(main.aceitaPedidoDeEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(e.portaEntregador)));
+                            e.transicao(new Evento(Entregador.aceitaPedidoDeEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(e.portaEntregador)));
                         }
                     }else{
                         System.out.println("Você ainda não tem nenhum pedido pra aceitar");
@@ -128,7 +127,7 @@ public class EntregadorAtivo extends Estado implements Runnable{
                         }
                         if(k2>=0){
                             Pedido p2 = e.mochila.get(k2);
-                            e.transicao(new Evento(main.notificaEntrega,String.valueOf(p2.portaRestaurante),String.valueOf(p2.idPedido),String.valueOf(e.portaEntregador)));
+                            e.transicao(new Evento(Entregador.notificaEntrega,String.valueOf(p2.portaRestaurante),String.valueOf(p2.idPedido),String.valueOf(e.portaEntregador)));
                         }
                     }else{
                         System.out.println("Nada para aceitar...");

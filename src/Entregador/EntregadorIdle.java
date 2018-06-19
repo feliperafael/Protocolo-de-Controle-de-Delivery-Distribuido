@@ -6,7 +6,7 @@
 package Entregador;
 
 import Restaurante.Pedido;
-import static Sistema.SistemaIdle.recebeConfirmacaoDePedidoDeEntrega;
+import Sistema.Sistema;
 import framework.Entidade;
 import framework.Estado;
 import framework.Evento;
@@ -22,10 +22,7 @@ import java.util.logging.Logger;
  */
 public class EntregadorIdle extends Estado implements Runnable{
     Entregador e;
-    public static final int cadastroEntregador = 0;
-    public static final int aceitaPedidoDeEntrega = 1;    
-    public static final int recebePedidoDeEntrega = 3;
-    public static final int confirmacaoDeAceite = 4;
+
     
     public EntregadorIdle(Entidade e){
         super(e);
@@ -36,24 +33,23 @@ public class EntregadorIdle extends Estado implements Runnable{
     public void transicao(Evento ev){
         //System.out.println("Estado atual: EntregadorIdle");
         switch(ev.codigo){
-            case cadastroEntregador:
+            case Entregador.cadastroEntregador:
                 System.out.println("Cadastrou entregador");
                 new Thread(this).start();
 
                 break;
-            case aceitaPedidoDeEntrega:
+            case Entregador.aceitaPedidoDeEntrega:
                 System.out.println("Aceitando pedido de entrega...");
-                Evento ev_2 = new Evento(Sistema.SistemaIdle.recebeConfirmacaoDePedidoDeEntrega,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),String.valueOf(ev.portaEntregador));
+                Evento ev_2 = new Evento(Sistema.recebeConfirmacaoDePedidoDeEntrega,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),String.valueOf(ev.portaEntregador));
                 e.msg.conecta("localhost", 9000); 
                 e.msg.envia(ev_2.toString());
                 e.msg.termina();  
                 break;
-            case recebePedidoDeEntrega:
+            case Entregador.recebePedidoDeEntrega:
                 System.out.println("recebePedidoDeEntrega");
                 e.RecebePedidoDeEntrega(ev);
                 break;
-            case confirmacaoDeAceite:
-                System.out.println("ACK de aceite");
+            case Entregador.confirmacaoDeAceite:
                 if(Integer.valueOf(ev.portaEntregador) == (e.portaEntregador)){
                     // coloca na mochila
                     System.out.println("Colocando na mochila");
@@ -64,7 +60,7 @@ public class EntregadorIdle extends Estado implements Runnable{
                 
                 e.mudaEstado(e.ativo);//vai para estado ativo
                 break;
-            case main.erroPedidoJaAceito:
+            case Entregador.erroPedidoJaAceito:
                 System.out.println("Erro -> Pedido solicitado já foi aceito por outro Entregador.");
                 int i = e.getIndicePedidoEntrega(Integer.valueOf(ev.portaRestaurante),Integer.valueOf(ev.idPedido));
                 //Se o pedido ja nao ta disponivel mais, remove ele da lista
@@ -87,12 +83,14 @@ public class EntregadorIdle extends Estado implements Runnable{
             //print Menu
             e.printMenu();
             String aux;
+            int opcao;
             try{
-                aux = in.readLine();               
+                aux = in.readLine();
+                opcao = Integer.valueOf(aux);
             }catch(IOException | NumberFormatException ex){
-                aux = "-1";
+                aux = "0";
+                opcao = 0;
             }
-            int opcao = Integer.valueOf(aux);
             switch(opcao){
                 case 1:
                     //se existe algum pedido pra aceitar
@@ -108,7 +106,7 @@ public class EntregadorIdle extends Estado implements Runnable{
                         }
                         if(k>=0){
                             Pedido p = e.pedidos_de_entrega.get(k);
-                            e.transicao(new Evento(aceitaPedidoDeEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(e.portaEntregador)));
+                            e.transicao(new Evento(Entregador.aceitaPedidoDeEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(e.portaEntregador)));
                         }
                     }else{
                         System.out.println("Você ainda não tem nenhum pedido pra aceitar");
@@ -126,7 +124,7 @@ public class EntregadorIdle extends Estado implements Runnable{
                         }
                         if(k2>=0){
                             Pedido p2 = e.mochila.get(k2);
-                            e.transicao(new Evento(main.notificaEntrega,String.valueOf(p2.portaRestaurante),String.valueOf(p2.idPedido),String.valueOf(e.portaEntregador)));
+                            e.transicao(new Evento(Entregador.notificaEntrega,String.valueOf(p2.portaRestaurante),String.valueOf(p2.idPedido),String.valueOf(e.portaEntregador)));
                         }
                     }else{
                         System.out.println("Nada para aceitar...");

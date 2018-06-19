@@ -29,17 +29,17 @@ public class RestauranteIdle extends Estado implements Runnable{
     @Override
     public void transicao(Evento ev){
         switch(ev.codigo){
-            case main.cadastroRestaurante:
+            case Restaurante.cadastroRestaurante:
                 System.out.println("Restaurante cadastrado com sucesso!");
                 new Thread(this).start();
                 break;
-            case main.solicitaEntrega:
-                Evento e = new Evento(3,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),String.valueOf(ev.portaEntregador));
+            case Restaurante.solicitaEntrega:
+                Evento e = new Evento(Sistema.Sistema.recebePedidoDeEntrega,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),String.valueOf(ev.portaEntregador));
                 r.msg.conecta("localhost", 9000); 
                 r.msg.envia(e.toString());
                 r.msg.termina();                
                 break;
-            case main.entregaNotificada:
+            case Restaurante.entregaNotificada:
                 System.out.println("Entrega do pedido com id " + ev.idPedido + " confirmada.");
                 r.fecharPedidoEntregue(Integer.valueOf(ev.idPedido),Integer.valueOf(ev.portaEntregador));
                 break;
@@ -81,13 +81,12 @@ public class RestauranteIdle extends Estado implements Runnable{
                         aux = "-1";
                     }
                     int idPedido = Integer.valueOf(aux);
-                    System.out.println(idPedido);
                     Pedido p = r.gerarPedido(idPedido);
 
 
                     //transição 1 - solicita entrega
                     //gera evento que solicita entrega
-                    r.transicao(new Evento(main.solicitaEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(p.portaEntregador)));
+                    r.transicao(new Evento(Restaurante.solicitaEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),String.valueOf(p.portaEntregador)));
                     break;
                 case 2:
                     r.listarPedidoProntos();

@@ -28,10 +28,6 @@ public class main {
     
     Entidade r;
     
-    public static final int cadastroRestaurante = 0;
-    public static final int solicitaEntrega = 1;    
-    public static final int entregaNotificada  = 6;
-    
     public static void main(String [] args) throws IOException{
         main m = new main();
         
@@ -57,7 +53,7 @@ public class main {
         thread2.start();
         
         // Cadastro do restaurante
-        Evento e = new Evento(cadastroRestaurante,String.valueOf(porta),"-1","-1"); // Apenas para cadastro
+        Evento e = new Evento(Restaurante.cadastroRestaurante,String.valueOf(porta),"-1","-1"); // Apenas para cadastro
         r.msg.conecta("localhost", 9000);
         r.msg.envia(e.toString());
         r.msg.termina();

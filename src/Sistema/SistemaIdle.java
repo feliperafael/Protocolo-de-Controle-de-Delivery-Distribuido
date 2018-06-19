@@ -5,7 +5,8 @@
  */
 package Sistema;
 
-import static Entregador.EntregadorIdle.confirmacaoDeAceite;
+import Entregador.Entregador;
+import Restaurante.Pedido;
 import framework.Entidade;
 import framework.Estado;
 import framework.Evento;
@@ -17,15 +18,6 @@ import framework.Evento;
 public class SistemaIdle extends Estado{
     Sistema s;
     
-    public static final int cadastraRestaurante = 0;
-    public static final int recebePedidoDeEntrega = 3;    
-    public static final int divulgaPedidoDeEntrega = 4;
-    public static final int recebeConfirmacaoDePedidoDeEntrega = 5;
-    public static final int recebeConfirmacaoDeEntrega = 6;
-    public static final int enviaConfirmacaoDePedidoDeEntrega = 7;
-    public static final int enviaConfirmacaoDeEntrega = 8;
-    public static final int cadastraEntregador = 9;
-    
     
     public SistemaIdle(Entidade e){
         super(e);
@@ -36,13 +28,13 @@ public class SistemaIdle extends Estado{
     public void transicao(Evento ev){
         int portaRestaurante;
         switch(ev.codigo){
-            case cadastraRestaurante:
+            case Sistema.cadastraRestaurante:
                 portaRestaurante = Integer.valueOf(ev.portaRestaurante);
                 int teste = s.cadastraRestaurante(portaRestaurante);
                 if(teste != -1){
                     System.out.println("Restaurante com a porta " + portaRestaurante + " cadastrado com sucesso.");
                     
-                    Evento e = new Evento(0,String.valueOf(portaRestaurante),"-1","-1"); // Apenas para cadastro
+                    Evento e = new Evento(Restaurante.Restaurante.cadastroRestaurante,String.valueOf(portaRestaurante),"-1","-1"); // Apenas para cadastro
                     s.msg.conecta("localhost", portaRestaurante);
                     s.msg.envia(e.toString());
                     s.msg.termina();
@@ -51,39 +43,43 @@ public class SistemaIdle extends Estado{
                     System.out.println("Restaurante já cadastrado.");
                 //s.mudaEstado(this);
                 break;
-            case recebePedidoDeEntrega:
+            case Sistema.recebePedidoDeEntrega:
                 portaRestaurante = Integer.valueOf(ev.portaRestaurante);
                 int idPedido = Integer.valueOf(ev.idPedido);
                 s.adicionarPedidoOfertado(portaRestaurante,idPedido);
                 System.out.println("Pedido com id -> " + idPedido + " | Restaurante porta -> " + portaRestaurante + " cadastrado no sistema.\n" );
                 //Evento ev = ;
-                s.transicao(new Evento(4,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),"-1"));
+                s.transicao(new Evento(Sistema.divulgaPedidoDeEntrega,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),"-1"));
            
                 break;
-            case divulgaPedidoDeEntrega:
+            case Sistema.divulgaPedidoDeEntrega:
                 //todos que ainda não tem entregador vinculado
                 System.out.println("******** DivulgaPedidoDeEntrega **********");
-                s.pedidosOfertados.forEach((p) -> {
+                
+                for(Pedido p : s.pedidosOfertados){
                     if(p.portaEntregador < 1){
-                        s.entregadores.forEach((entregadorAtual) -> {
+                        for(Entregador entregadorAtual : s.entregadores){
                             //envia mensagem para o entregador
-                            Evento e = new Evento(3,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),"-1");
+                            Evento e = new Evento(Entregador.recebePedidoDeEntrega,String.valueOf(p.portaRestaurante),String.valueOf(p.idPedido),"-1");
                             System.out.println("PORTA ENTREGADOR: "+String.valueOf(entregadorAtual.portaEntregador));
                             /// Envia a Menssagem
-                            s.msg.conecta("localhost", (entregadorAtual.portaEntregador)); 
-                            s.msg.envia(e.toString());
-                            s.msg.termina();
-                        });
+                            int fracasso;
+                            do{
+                                fracasso = s.msg.conecta("localhost", (entregadorAtual.portaEntregador)); 
+                                s.msg.envia(e.toString());
+                                s.msg.termina();
+                            }while(fracasso == 1);
+                        }
                     }
-                });
+                }
                 
                 break;
-            case recebeConfirmacaoDePedidoDeEntrega:
+            case Sistema.recebeConfirmacaoDePedidoDeEntrega:
                 System.out.println("_______________recebeConfirmacaoDePedidoDeEntrega______________");
                 if(s.associarEntregadorPedido(Integer.valueOf(ev.portaRestaurante), Integer.valueOf(ev.idPedido), Integer.valueOf(ev.portaEntregador))){
                     System.out.println("Associado com sucesso");
                     //respode para entregador avisando que ele conseguiu aceitar
-                    Evento ev_3 = new Evento(Entregador.EntregadorIdle.confirmacaoDeAceite,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),ev.portaEntregador);
+                    Evento ev_3 = new Evento(Entregador.confirmacaoDeAceite,String.valueOf(ev.portaRestaurante),String.valueOf(ev.idPedido),ev.portaEntregador);
                    
                     /// Envia a Menssagem
                     s.msg.conecta("localhost", Integer.valueOf(ev.portaEntregador)); 
@@ -92,7 +88,7 @@ public class SistemaIdle extends Estado{
                 }else{
                     System.out.println("alguem já aceitou essa entrega");
                     //responde para o entregador avisando que a entrega não está disponivel
-                    Evento ev_3 = new Evento(Entregador.main.erroPedidoJaAceito,ev.portaRestaurante,ev.idPedido,ev.portaEntregador);
+                    Evento ev_3 = new Evento(Entregador.erroPedidoJaAceito,ev.portaRestaurante,ev.idPedido,ev.portaEntregador);
 
                     /// Envia a Menssagem
                     s.msg.conecta("localhost", Integer.valueOf(ev.portaEntregador)); 
@@ -100,13 +96,13 @@ public class SistemaIdle extends Estado{
                     s.msg.termina();
                 }
                 break;
-            case cadastraEntregador:
+            case Sistema.cadastraEntregador:
                 int portaEntregador = Integer.valueOf(ev.portaEntregador);
                 int teste2 = s.cadastraEntregador(portaEntregador);
                 if(teste2 != -1){
                     System.out.println("Entregador com a porta " + portaEntregador + " cadastrado com sucesso.");
                     
-                    Evento ev_2 = new Evento(Entregador.EntregadorIdle.cadastroEntregador,"-1","-1",String.valueOf(portaEntregador)); // 
+                    Evento ev_2 = new Evento(Entregador.cadastroEntregador,"-1","-1",String.valueOf(portaEntregador)); // 
                     //System.out.println("Repondendo ao entregador");
                     //System.out.println(ev_2.toString());
                     s.msg.conecta("localhost", portaEntregador);

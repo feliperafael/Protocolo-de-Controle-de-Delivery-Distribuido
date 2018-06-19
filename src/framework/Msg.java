@@ -41,11 +41,12 @@ public class Msg {
                     //System.out.println("Conectado a porta "+_dest);
             } catch (UnknownHostException e2) {
                     // TODO Auto-generated catch block
+                    System.out.println("TESTE");
                     e2.printStackTrace();
             } catch (IOException e2) {
                     // TODO Auto-generated catch block
-                    e2.printStackTrace();
-                    //System.out.println("Tentando nova conexao");
+                    //e2.printStackTrace();
+                    System.out.println("Tentando nova conexao");
                     ret=1;  
             }
             return ret;

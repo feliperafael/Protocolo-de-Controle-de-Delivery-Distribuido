@@ -21,6 +21,14 @@ public class Entregador extends Entidade {
     public ArrayList<Pedido> mochila; // pedidos que ainda não foram entregues
     public ArrayList<Pedido> pedidos_de_entrega; // buffer requisição de entregas vindas do sistema
     
+    public static final int cadastraEntregador = 9;
+    public static final int aceitaPedidoDeEntrega = 1;    
+    public static final int notificaEntrega = 6;
+    public static final int recebePedidoDeEntrega = 3;
+    public static final int confirmacaoDeAceite = 4;
+    public static final int erroPedidoJaAceito = 5;
+    public static final int cadastroEntregador = 0;  
+    
     public Entregador(int lPort){
         super(lPort);
         portaEntregador = lPort;
